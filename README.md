@@ -9,7 +9,7 @@
 
 ## Summary
 
-We're going to build a [Hacker News][] clone in Sinatra.  This will be the most
+We're going to build a [Hacker News][] clone in our MVC framework.  This will be the most
 fully-featured web application we've built so far.  Excited?!
 
 ## Part 1: Users, Posts and Comments
