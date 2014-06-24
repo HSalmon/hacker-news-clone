@@ -1,0 +1,6 @@
+<div class="container">
+  <p> User: <%= @user.name %></p>
+  <p> Birthed: <%= time_ago_in_words(@user.created_at) %></p>
+  <%= link_to "Submissions", "#{user_posts_path(@user)}" %>
+  <%= link_to "Comments", "#{user_comments_path(@user)}" %>
+</div>

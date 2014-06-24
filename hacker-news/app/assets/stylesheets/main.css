@@ -1,0 +1,13 @@
+
+.nav ul { display: inline }
+
+.nav li {
+  display: inline;
+  margin: 0px 10px;
+}
+
+#flash_notice { color: green; }
+
+.error_messages { color: red; }
+
+.container { margin-right: 20px ;}

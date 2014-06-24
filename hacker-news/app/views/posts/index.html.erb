@@ -1,0 +1,11 @@
+<div class="container">
+  <ul>
+    <% @posts.each do |post| %>
+      <li><%=link_to post.title, "http://#{post.url}", :target => '_blank' %></li>
+      <ul>
+        <li> Posted by <%=link_to post.user.name, "#{user_path(post.user)}" %> <%= time_ago_in_words(post.created_at) + " ago" %></li>
+        <li><%=link_to "Comments", "#{post_path(post)}" %></li>
+      </ul>
+    <% end %>
+  </ul>
+</div>

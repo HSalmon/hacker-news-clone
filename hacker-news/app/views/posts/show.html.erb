@@ -1,0 +1,10 @@
+<div class="container">
+  <%= link_to @post.title, "http://#{@post.url}", :target => '_blank' %>
+  <p> Posted by <%=link_to @post.user.name, "#{user_path(@post.user)}" %> <%= time_ago_in_words(@post.created_at) + " ago" %></p>
+  <ul>
+  <% @comments.each do |comment| %>
+    <li><%= comment.content %></li>
+  <% end %>
+  </ul>
+  <%= link_to "Add comment", new_post_comment_path(@post) %>
+</div>
