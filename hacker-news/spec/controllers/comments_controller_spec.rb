@@ -5,12 +5,27 @@ describe CommentsController do
   let(:user) { double :user, id: 1 }
   let(:post_1) { double :post, id: 1 }
 
+  before do
+    controller.stub(:current_user).and_return(user)
+  end
+
   describe 'GET index' do
+
+    before do
+      comment = double("comment")
+      Comment.stub(:all).and_return([comment])
+      get :index
+    end
+
+    it "assigns comments" do
+      expect(assigns(:comments)).to eq([comment])
+    end
 
     it 'renders the index template' do
       get :index
       expect(response).to render_template(:index)
     end
+
   end
 
   describe 'GET user_comments' do
@@ -26,26 +41,58 @@ describe CommentsController do
 
   describe 'GET new' do
 
-    it 'renders the new template' do
-      Post.stub(:find).and_return(post)
+    before do
+      new_comment = double("comment")
+      Comment.stub(:new).and_return(new_comment)
+      Post.stub(:find).and_return(post_1)
       get :new
+    end
+
+    it "assigns post variable" do
+      expect(assigns(:post)).to eq(post_1)
+    end
+
+    it "assigns a comment variable" do
+      expect(assigns(:comment)).to eq(new_comment)
+    end
+
+    it 'renders the new template' do
       expect(response).to render_template(:new)
     end
   end
 
-  # describe 'POST create' do
+  describe 'POST create' do
 
-  #   let(:comment) { double :comment, save: true }
+    let(:post_id) { "12" }
+    let(:id) { "13" }
+    let(:post_attrs) { { post_id: post_id, id: id } }
 
-  #   context 'with successful save' do
+    let(:post_1) { double("post") }
+    let(:comments) { [double("comment")] }
+    let(:new_comment) { double("new_comment", save: true, post: post_1) }
 
-  #     it 'provides the correct flash message' do
-  #       Post.stub(:find).and_return(post_1)
-  #       post_1.stub(:comments, :build).and_return(comment)
-  #       comment.stub(:user_id=).with(user.id)
-  #       post :create, id: post_1.id
-  #       flash[:notice].should =~ /Successful comment creation!/
-  #     end
-  #   end
-  # end
+    before do
+      post_1.stub(:comments).and_return(comments)
+      comments.stub(:build).and_return(new_comment)
+      new_comment.stub(:user_id=).with(user.id)
+      Post.stub(:find).and_return(post_1)
+    end
+
+    it "finds a post by id" do
+      Post.should_receive(:find).with(post_id)
+      post :create, post_attrs
+    end
+
+    context "when comment can't be saved" do
+      before do
+        new_comment.stub(:save).and_return(false)
+      end
+
+      it 'renders the new template' do
+        post :create, post_attrs
+        expect(response).to render_template(:new)
+      end
+    end
+
+  end
 end
