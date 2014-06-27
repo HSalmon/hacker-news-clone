@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   has_many :posts
   has_many :comments
+  has_many :post_votes
+  has_many :upvoted_posts, through: :post_votes, source: :post
 
   before_save :encrypt_password
 
@@ -24,5 +26,9 @@ class User < ActiveRecord::Base
       self.password_salt = BCrypt::Engine.generate_salt
       self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
     end
+  end
+
+  def has_upvoted?(post)
+    upvoted_posts.include?(post)
   end
 end

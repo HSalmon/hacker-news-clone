@@ -11,7 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140623224212) do
+ActiveRecord::Schema.define(:version => 20140627031610) do
+
+  create_table "comment_votes", :force => true do |t|
+    t.boolean "is_upvote",  :default => true
+    t.integer "comment_id"
+    t.integer "user_id"
+  end
 
   create_table "comments", :force => true do |t|
     t.text     "content"
@@ -21,12 +27,19 @@ ActiveRecord::Schema.define(:version => 20140623224212) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "post_votes", :force => true do |t|
+    t.boolean "is_upvote", :default => true
+    t.integer "post_id"
+    t.integer "user_id"
+  end
+
   create_table "posts", :force => true do |t|
     t.string   "title"
     t.string   "url"
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.integer  "post_votes_count", :default => 0
   end
 
   create_table "users", :force => true do |t|

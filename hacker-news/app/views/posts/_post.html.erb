@@ -1,0 +1,11 @@
+<article id="<%= post.id %>">
+  <a href='/posts/<%= post.id %>/vote' class="fa fa-sort-desc vote-button <% if current_user && current_user.has_upvoted?(post) %>red<% end %>"></a>
+  <h3><%=link_to post.title, "http://#{post.url}", :target => "_blank", :class =>"post-title" %></h3>
+  <p>
+    <span class='upvotes'><%= post.upvote_count %></span>
+    <span class='username'> Posted by <%=link_to post.user.name, "#{user_path(post.user)}" %></span>
+    <span class='timestamp'><%= time_ago_in_words(post.created_at) %> </span>
+    <span class='comments'><%=link_to pluralize(post.comments.count, "comment"), "#{post_path(post)}" %> </span>
+    <a class="delete" href='/posts/<%= post.id %>'></a>
+  </p>
+</article>

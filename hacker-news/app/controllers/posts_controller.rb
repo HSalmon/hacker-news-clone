@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
 
   def index
-    @posts = Post.all
+    @posts = Post.by_most_popular
   end
 
   def show
@@ -29,5 +29,10 @@ class PostsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def most_recent
+    @posts = Post.by_most_recent
+    render :index
   end
 end

@@ -1,0 +1,9 @@
+<article id="<%= comment.id %>">
+  <a href='/comments/<%= comment.id %>/vote' class="fa fa-sort-desc vote-button <% if current_user && current_user.has_upvoted?(comment) %>red<% end %>"></a>
+  <p class="comment-details">
+    <span class="by-and-when"><%=link_to "#{comment.user.name}", "#{user_path(comment.user)}" %> <%= time_ago_in_words(comment.created_at) %></span>
+    <span class="comment-title"><%=link_to "#{comment.post.title}" %></span>
+  </p>
+  <br>
+  <h3 class="comment-content"><%= comment.content %></h3>
+</article>

@@ -1,8 +1,3 @@
-<div class="container">
-  <ul>
-    <% @comments.each do |comment| %>
-      <li><%= comment.content %></li>
-      <li><%=link_to "#{comment.user.name}", "#{user_path(comment.user)}" %> <%= time_ago_in_words(comment.created_at) + " ago" %></li>
-    <% end %>
-  </ul>
-</div>
+<% @comments.each do |comment| %>
+    <%= render partial: 'comment', locals: { comment: comment } %>
+<% end %>

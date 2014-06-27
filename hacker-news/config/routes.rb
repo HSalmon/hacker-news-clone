@@ -12,6 +12,7 @@ HackerNews::Application.routes.draw do
   get 'log_out' => 'sessions#destroy', :as => 'log_out'
   get '/users/:id/posts', to: 'posts#user_posts', as: 'user_posts'
   get '/users/:id/comments', to: 'comments#user_comments', as:'user_comments'
+  get '/most_recent', to: 'posts#most_recent', as: 'most_recent'
 
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
@@ -23,6 +24,7 @@ HackerNews::Application.routes.draw do
   resources :posts
   resources :comments
   resources :sessions
+  resources :post_votes, only: :create
 
   # Sample resource route with options:
   #   resources :products do

@@ -2,6 +2,8 @@
 <html>
 <head>
   <title>HackerNews</title>
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <link href='http://fonts.googleapis.com/css?family=Orbitron|Jura:400,600,500' rel='stylesheet' type='text/css'>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -9,17 +11,18 @@
 <body>
 <div class="navbar">
   <ul class="nav">
-    <li><%= link_to "new" %></li>
-    <li><%= link_to "comments", comments_path %></li>
+    <li class="title"><a href="/">slacker news </a></li>
+    <li><a href="<%= most_recent_path %>">new</a></li>
+    <li><a href="<%= comments_path %>">comments</a></li>
+    <li><a href="<%= new_post_path %>">submit</a></li>
     <li>ask</li>
     <li>jobs</li>
-    <li><%= link_to "submit", new_post_path %></li>
     <% if current_user %>
       Logged in as <%= current_user.name %>
       <li><%= link_to "log out", log_out_path %></li>
     <% else %>
-      <li><%= link_to "sign in", sign_in_path %></li>
-      <li><%= link_to "sign up", sign_up_path %></li>
+      <li><a href="<%= sign_in_path %>">sign in</a></li>
+      <li><a href="<%= sign_up_path %>">sign up</a></li>
     <% end %>
   </ul>
 </div>
@@ -27,8 +30,11 @@
 <% flash.each do |name, msg| %>
   <%= content_tag :div, msg, :id => "flash_#{name}" %>
 <% end %>
-
-<%= yield %>
+<table>
+  <tbody class="table-body">
+    <%= yield %>
+  </tbody>
+</table>
 
 </body>
 </html>
