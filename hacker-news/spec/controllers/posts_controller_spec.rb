@@ -2,9 +2,22 @@ require 'spec_helper'
 
 describe PostsController do
 
-  let(:user) { double :user, id: 1 }
+  let(:user) { double :user, id: 20 }
 
   describe 'GET index' do
+
+    let(:post) { double :post }
+
+    it 'finds all of the posts sorted by popularity' do
+      Post.should_receive(:by_most_popular)
+      get :index
+    end
+
+    it 'assigns the posts variable' do
+      Post.stub(:by_most_popular).and_return([post])
+      get :index
+      expect(assigns(:posts)).to eq([post])
+    end
 
     it 'renders the index template' do
       get :index
@@ -12,14 +25,27 @@ describe PostsController do
     end
   end
 
-
   describe 'GET show' do
 
     let(:comment) { double :comment }
-    let(:post) { double :post, id: 1, comments: [comment] }
+    let(:post) { double :post, id: '8', comments: [comment] }
+
+    before do
+      Post.stub(:find_by_id).and_return(post)
+    end
+
+    it 'finds a post by id' do
+      Post.should_receive(:find_by_id).with(post.id)
+      get :show, id: post.id
+    end
+
+    it 'assigns the comments variable' do
+      post.stub(:comments).and_return([comment])
+      get :show, id: post.id
+      expect(assigns(:comments)).to eq([comment])
+    end
 
     it 'renders the show template' do
-      Post.stub(:find_by_id).and_return(post)
       get :show, id: post.id
       expect(response).to render_template(:show)
     end
@@ -28,9 +54,9 @@ describe PostsController do
 
   describe 'GET user_posts' do
 
-    let(:post) { double :post, user_id: user.id }
 
     it 'renders the index template' do
+      post = double('post', user_id: user.id)
       Post.stub(:where).and_return(post)
       get :user_posts, id: user.id
       expect(response).to render_template(:index)
